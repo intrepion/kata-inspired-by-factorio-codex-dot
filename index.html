@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Brasswake — The Relay Field</title>
+  </head>
+  <body>
+    <div id="app">
+      <header>
+        <div class="brand">◈ <b>BRASSWAKE</b><span>THE RELAY FIELD</span></div>
+        <div id="stats"></div>
+        <button id="pause">Pause</button><button id="save">Save</button
+        ><button id="load">Load</button><button id="help">Field guide</button>
+      </header>
+      <main>
+        <canvas
+          id="world"
+          aria-label="Factory field. WASD moves, click places or inspects, F mines, R rotates."
+        ></canvas>
+        <aside>
+          <p class="eyebrow">EXPEDITION 07 / RECOVERY</p>
+          <h1>Wake the quiet coast.</h1>
+          <p class="intro">
+            The old relay is silent. Turn this mineral field into a factory,
+            then send a signal home.
+          </p>
+          <div id="objective"></div>
+          <div id="inspection"></div>
+          <div id="inventory"></div>
+        </aside>
+        <div id="notice" role="status"></div>
+        <div class="coordinates" id="coordinates"></div>
+      </main>
+      <footer>
+        <div id="toolbar"></div>
+        <div class="hint">
+          WASD move · click build / inspect · R rotate · Q clear hand · F mine ·
+          right click recover · E inventory · wheel zoom · Space pause
+        </div>
+      </footer>
+    </div>
+    <dialog id="guide">
+      <h2>A field engineer’s notebook</h2>
+      <p>
+        Build within 6 tiles. Walk with WASD. Select a machine below, point at a
+        tile and click. R rotates the arrow; Q clears your hand. Click an
+        existing machine to inspect it. Right click recovers its machine and
+        stored items. Hold F over bare deposits to mine.
+      </p>
+      <h3>First working line</h3>
+      <p>
+        Place a drill on blue ironstone. Its arrow ejects ore into the adjacent
+        belt. Belts feed belts, but machines need arms: an arm picks up behind
+        itself and puts down ahead. Leave a tile for the arm between a belt and
+        a furnace.
+      </p>
+      <p>
+        Place a generator and coal it from its panel. Place poles within 4 tiles
+        of machines; poles link within 6 tiles. Each generator provides 24 kW.
+        Furnaces burn their own coal and need no electricity.
+      </p>
+      <p>
+        Smelt ore into plates. An assembler makes gears from 2 plates, or survey
+        packs from 1 gear + 1 plate. Change the recipe only when its inventories
+        are empty. Feed 8 packs into a powered lab. Craft and power a beacon for
+        10 seconds to win.
+      </p>
+      <p>
+        Use the panel to insert materials and collect outputs. E opens your
+        inventory and manual crafting. Manual crafting cannot smelt plates or
+        make survey packs. Coal is the dark patch south; stone is southeast.
+        Saves are local to this browser. A fresh expedition replaces only this
+        game’s save.
+      </p>
+      <button id="closeGuide">Back to the field</button
+      ><button id="new">Fresh expedition</button>
+    </dialog>
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>

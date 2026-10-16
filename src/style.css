@@ -1,0 +1,271 @@
+@import url("https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap");
+:root {
+  font-family: Inter, system-ui, sans-serif;
+  color: #dce1d9;
+  background: #171e20;
+  font-size: 13px;
+}
+* {
+  box-sizing: border-box;
+}
+body {
+  margin: 0;
+}
+button {
+  font: inherit;
+  color: inherit;
+  background: #293337;
+  border: 1px solid #47534f;
+  border-radius: 4px;
+  padding: 8px 11px;
+  cursor: pointer;
+}
+button:hover {
+  background: #3e4b47;
+  border-color: #e4b45c;
+}
+button:focus-visible {
+  outline: 2px solid #ffd17b;
+}
+header {
+  height: 64px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 0 24px;
+  border-bottom: 1px solid #49504b;
+  background: #20292b;
+}
+.brand {
+  font-size: 24px;
+  color: #e6ba72;
+  letter-spacing: 3px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.brand b {
+  font-family: "Barlow Condensed", sans-serif;
+}
+.brand span {
+  font-size: 9px;
+  letter-spacing: 2px;
+  color: #9da99f;
+  border-left: 1px solid #677067;
+  padding-left: 14px;
+  margin-left: 8px;
+}
+#stats {
+  margin-left: auto;
+  margin-right: 16px;
+  font-size: 11px;
+  color: #a6b6a9;
+}
+main {
+  height: calc(100dvh - 186px);
+  position: relative;
+  display: flex;
+}
+canvas {
+  width: calc(100% - 310px);
+  height: 100%;
+  background: #44534a;
+  display: block;
+}
+aside {
+  width: 310px;
+  background: #20292b;
+  border-left: 1px solid #505950;
+  padding: 23px 20px;
+  overflow: auto;
+}
+.eyebrow {
+  font-size: 9px;
+  letter-spacing: 2px;
+  color: #d4ac68;
+}
+h1 {
+  font-family: "Barlow Condensed", sans-serif;
+  font-size: 33px;
+  line-height: 1;
+  margin: 13px 0;
+}
+.intro {
+  color: #a8b7ad;
+  font-size: 12px;
+  line-height: 1.7;
+}
+h2,
+h3 {
+  font-family: "Barlow Condensed", sans-serif;
+  letter-spacing: 1px;
+}
+h3 {
+  color: #e5bc79;
+  font-size: 20px;
+  margin: 15px 0 8px;
+}
+.card {
+  border: 1px solid #47544d;
+  background: #26322f;
+  padding: 12px;
+  margin: 15px 0;
+  border-radius: 4px;
+}
+.card p {
+  font-size: 11px;
+  color: #b6c3b7;
+  line-height: 1.7;
+  margin: 6px 0;
+}
+.track {
+  height: 5px;
+  background: #131c1a;
+  margin-top: 12px;
+}
+.track i {
+  display: block;
+  height: 100%;
+  background: #d9b06c;
+}
+.row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 5px 0;
+  font-size: 11px;
+}
+.row button {
+  padding: 4px 6px;
+  font-size: 10px;
+}
+.stock {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 3px;
+}
+.stock span {
+  padding: 5px;
+  background: #192423;
+  font-size: 10px;
+}
+.craft {
+  width: 100%;
+  text-align: left;
+  margin: 3px 0;
+  font-size: 11px;
+}
+.craft small {
+  display: block;
+  color: #a5b9aa;
+  margin-top: 4px;
+}
+.status {
+  color: #e8c37d;
+}
+footer {
+  height: 122px;
+  padding: 12px 24px;
+  background: #1c2527;
+  border-top: 1px solid #4c574e;
+}
+#toolbar {
+  display: flex;
+  gap: 6px;
+  justify-content: center;
+}
+.tool {
+  width: 78px;
+  padding: 7px 3px;
+  font-size: 10px;
+  position: relative;
+}
+.tool b {
+  display: block;
+  font-size: 22px;
+  margin: 2px;
+}
+.tool small {
+  color: #9aafa0;
+}
+.tool.selected {
+  background: #4c4935;
+  border: 1px solid #ebc172;
+  color: #ffdb96;
+}
+.hint {
+  font-size: 10px;
+  color: #a9b6a9;
+  text-align: center;
+  margin-top: 10px;
+  letter-spacing: 0.2px;
+}
+#notice {
+  position: absolute;
+  bottom: 35px;
+  left: 24px;
+  background: #172523e8;
+  border-left: 3px solid #e9b765;
+  padding: 12px 18px;
+  pointer-events: none;
+}
+.coordinates {
+  position: absolute;
+  left: 24px;
+  bottom: 10px;
+  color: #d3ddc9;
+  font: 10px monospace;
+}
+dialog {
+  max-width: 650px;
+  background: #24322f;
+  color: #dce5d8;
+  border: 1px solid #b99a64;
+  border-radius: 8px;
+  padding: 30px;
+  line-height: 1.7;
+}
+dialog::backdrop {
+  background: #07100ddd;
+}
+dialog h2 {
+  font-size: 32px;
+  margin: 0;
+}
+dialog p {
+  color: #bdc9bb;
+}
+#new {
+  margin-left: 10px;
+}
+@media (max-width: 850px) {
+  .brand span {
+    display: none;
+  }
+  header {
+    padding: 0 8px;
+    gap: 4px;
+  }
+  .brand {
+    font-size: 18px;
+  }
+  #stats {
+    display: none;
+  }
+  aside {
+    width: 250px;
+    padding: 12px;
+  }
+  canvas {
+    width: calc(100% - 250px);
+  }
+  .tool {
+    width: 58px;
+  }
+  footer {
+    padding: 12px 5px;
+  }
+  .hint {
+    font-size: 8px;
+  }
+}
