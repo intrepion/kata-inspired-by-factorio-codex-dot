@@ -371,14 +371,82 @@ export function serialize(w: World) {
 }
 export function deserialize(raw: string): World {
   const w = JSON.parse(raw) as World;
+  const count = (n: unknown): n is number =>
+    typeof n === "number" && Number.isSafeInteger(n) && n >= 0;
+  const inventory = (i: Inventory) =>
+    i &&
+    typeof i === "object" &&
+    !Array.isArray(i) &&
+    Object.entries(i).every(([k, n]) => /^[a-z]+$/.test(k) && count(n));
+  const coordinate = (n: number, max: number) =>
+    Number.isFinite(n) && n >= 0 && n <= max;
+  const kinds: Kind[] = [
+    "drill",
+    "belt",
+    "arm",
+    "furnace",
+    "assembler",
+    "pole",
+    "generator",
+    "chest",
+    "lab",
+    "beacon",
+  ];
   if (
+    !w ||
     w.version !== 1 ||
-    !Array.isArray(w.entities) ||
-    !w.inventory ||
+    !count(w.tick) ||
+    !count(w.research) ||
+    w.research > 8 ||
+    typeof w.won !== "boolean" ||
+    !count(w.nextId) ||
+    !inventory(w.inventory) ||
     !w.player ||
+    !coordinate(w.player.x, 39) ||
+    !coordinate(w.player.y, 27) ||
     !w.patches ||
-    !Number.isFinite(w.tick)
+    typeof w.patches !== "object" ||
+    !Array.isArray(w.entities) ||
+    w.entities.length > 1120
   )
-    throw Error("Unsupported save");
+    throw Error("Invalid save");
+  const ids = new Set<number>(),
+    positions = new Set<string>();
+  for (const e of w.entities) {
+    if (
+      !e ||
+      !kinds.includes(e.kind) ||
+      !count(e.id) ||
+      e.id >= w.nextId ||
+      ids.has(e.id) ||
+      !count(e.x) ||
+      !count(e.y) ||
+      !coordinate(e.x, 38) ||
+      !coordinate(e.y, 26) ||
+      positions.has(key(e.x, e.y)) ||
+      !count(e.dir) ||
+      e.dir > 3 ||
+      !inventory(e.inv) ||
+      !inventory(e.out) ||
+      !count(e.progress) ||
+      !count(e.fuel) ||
+      typeof e.powered !== "boolean" ||
+      typeof e.status !== "string" ||
+      !recipes[e.recipe] ||
+      (e.kind === "furnace" && e.recipe !== "plate") ||
+      (e.kind === "assembler" && !["gear", "survey"].includes(e.recipe))
+    )
+      throw Error("Invalid entity");
+    ids.add(e.id);
+    positions.add(key(e.x, e.y));
+  }
+  for (const [position, p] of Object.entries(w.patches))
+    if (
+      !/^\d+,\d+$/.test(position) ||
+      !p ||
+      !["ore", "coal", "stone"].includes(p.item) ||
+      !count(p.left)
+    )
+      throw Error("Invalid deposit");
   return w;
 }

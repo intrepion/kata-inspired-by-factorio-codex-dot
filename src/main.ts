@@ -332,14 +332,21 @@ function draw() {
   $("stats").textContent =
     `${paused ? "PAUSED" : "LIVE"} · ${(w.tick / 10).toFixed(0)}s · ${w.entities.filter((e) => e.powered && demand[e.kind]).reduce((s, e) => s + demand[e.kind]!, 0)} kW online`;
 }
-canvas.addEventListener("mousemove", (ev) => {
+let pointer = { x: 0, y: 0 };
+function updateHover() {
   const r = canvas.getBoundingClientRect();
   hover = {
-    x: Math.round((ev.clientX - r.left - r.width / 2) / zoom + w.player.x),
-    y: Math.round((ev.clientY - r.top - r.height / 2) / zoom + w.player.y),
+    x: Math.round((pointer.x - r.width / 2) / zoom + w.player.x),
+    y: Math.round((pointer.y - r.height / 2) / zoom + w.player.y),
   };
+}
+canvas.addEventListener("mousemove", (ev) => {
+  const r = canvas.getBoundingClientRect();
+  pointer = { x: ev.clientX - r.left, y: ev.clientY - r.top };
+  updateHover();
 });
 canvas.onclick = () => {
+  updateHover();
   const e = at(w, hover.x, hover.y);
   if (e) {
     inspected = e.id;
@@ -362,6 +369,7 @@ canvas.onclick = () => {
 };
 canvas.oncontextmenu = (ev) => {
   ev.preventDefault();
+  updateHover();
   notify(
     remove(w, hover.x, hover.y)
       ? "Structure and stored items recovered."
@@ -374,10 +382,13 @@ canvas.addEventListener(
   (e) => {
     e.preventDefault();
     zoom = Math.max(22, Math.min(64, zoom - e.deltaY * 0.04));
+    updateHover();
   },
   { passive: false },
 );
 window.addEventListener("keydown", (e) => {
+  if (guide.open) return;
+  updateHover();
   if ((e.target as HTMLElement).tagName === "BUTTON")
     (e.target as HTMLElement).blur();
   keys.add(e.key.toLowerCase());
@@ -407,14 +418,17 @@ $("pause").onclick = () => {
   panel();
 };
 const guide = $<HTMLDialogElement>("guide");
+let pausedBeforeGuide = false;
 $("help").onclick = () => {
+  pausedBeforeGuide = paused;
+  keys.clear();
   paused = true;
   guide.showModal();
   panel();
 };
 $("closeGuide").onclick = () => {
   guide.close();
-  paused = false;
+  paused = pausedBeforeGuide;
   panel();
 };
 $("new").onclick = () => {
@@ -426,7 +440,7 @@ $("new").onclick = () => {
   panel();
 };
 guide.addEventListener("cancel", () => {
-  paused = false;
+  paused = pausedBeforeGuide;
   panel();
 });
 function frame(now: number) {
@@ -440,6 +454,7 @@ function frame(now: number) {
     dy /= len;
     w.player.x = Math.max(1, Math.min(38, w.player.x + dx * dt * 4));
     w.player.y = Math.max(1, Math.min(26, w.player.y + dy * dt * 4));
+    updateHover();
     acc += dt;
     while (acc >= 0.1) {
       step(w);

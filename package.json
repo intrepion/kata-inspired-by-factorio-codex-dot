@@ -8,7 +8,7 @@
     "build": "tsc --noEmit && vite build",
     "test": "node --import tsx --test tests/*.test.ts",
     "test:browser": "playwright test",
-    "check": "npm run test && npm run build && npm run test:browser",
+    "check": "npm run format:check && npm run test && npm run build && npm run test:browser",
     "format:check": "prettier --check src tests *.ts *.json index.html"
   },
   "devDependencies": {

@@ -66,3 +66,5 @@ npm run check
 Tests cover finite extraction, reach, conservation, blocked transport, inserter filtering, crafting, fuel starvation, power capacity, deterministic save/reload, and a complete automated production chain ending in victory. Browser and native verification are recorded separately in [docs/VERIFICATION.md](docs/VERIFICATION.md).
 
 See [design and research](docs/DESIGN.md). MIT licensed. `.gitignore` contains the official github/gitignore Global Linux, Windows and macOS templates followed by stack ignores.
+
+The public GitHub Actions workflow runs formatting, simulation tests, strict compilation, a production build and isolated Chromium regressions on every push. Native gameplay is verified separately, never inferred from CI.

@@ -189,6 +189,7 @@ test("automated production: deposit → drill → belts → arm → furnace → 
     w.player = { x: e.x, y: e.y };
     remove(w, e.x, e.y);
   }
+  for (let i = 0; i < 5; i++) assert.ok(craft(w, "gear"));
   assert.ok(craft(w, "beacon"), JSON.stringify(w.inventory));
   gen.inv.coal = 5;
   gen2.inv.coal = 5;
@@ -196,4 +197,18 @@ test("automated production: deposit → drill → belts → arm → furnace → 
   run(w, 100);
   assert.equal(beacon.powered, true);
   assert.equal(w.won, true);
+});
+
+test("malformed version-one saves are rejected before replacement", () => {
+  const w = createWorld();
+  for (const bad of [
+    { ...w, player: {} },
+    { ...w, inventory: { ore: -1 } },
+    { ...w, research: 9 },
+    { ...w, patches: { "5,7": { item: "ore", left: -2 } } },
+  ])
+    assert.throws(() => deserialize(JSON.stringify(bad)));
+  const e = build(w, "belt", 10, 10);
+  e.dir = 9;
+  assert.throws(() => deserialize(serialize(w)));
 });

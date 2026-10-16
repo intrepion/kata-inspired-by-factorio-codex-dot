@@ -20,3 +20,5 @@ Authoritative research consulted 2026-10-16:
 - https://wiki.factorio.com/Belt_transport_system — directional physical items and backpressure; our single lane is an explicit simplification.
 
 Acceptance: deterministic extraction, transport/congestion, inserters, recipes, fuel, power and save tests; fully automated multistage production; strict TS and Vite build; headless browser interaction; separate native verification log. Public repository only, no deployed hosting.
+
+Review clarification: each consumer and generator belongs to its nearest covering pole (ties by pole ID), preventing a generator within coverage of two disconnected pole networks from duplicating capacity. Malformed local saves are rejected before world replacement. Field guide preserves prior pause state and blocks game shortcuts. Cursor world targeting is recomputed as the following camera moves.
