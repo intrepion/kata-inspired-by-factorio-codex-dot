@@ -1,6 +1,27 @@
 {
-  "schemaVersion": 1,
+  "schemaVersion": 2,
   "gameId": "kata-inspired-by-factorio-codex-dot",
   "playUrl": "https://intrepion.github.io/kata-inspired-by-factorio-codex-dot/",
-  "screenshots": []
+  "screenshots": [
+    {
+      "path": "arcade/screenshots/ci-20261103-01.jpg",
+      "sha256": "f8e63c11c8237a483abd3442a8a397d36252c67382158407d5444e556412bf07",
+      "alt": "Brasswake gameplay",
+      "provenance": {
+        "kind": "ci_gameplay_capture",
+        "sourcePath": "arcade/capture-evidence/ci-20261103-01.png",
+        "sourceSha256": "c30a867e434af929a4e2674e9296e05433df6aad1044540a5c3129dec5ba8333",
+        "captureCommit": "393f16d40b885bb2078bc2e00c6e2003ee256c92",
+        "workflowRunId": "41618864337",
+        "inputHashes": {
+          "assets/index-B_MiVbfW.js": "2bcb2ea67734d2d3a09b05ebadf50ddcf87bea3bc19b4a129507ecf51ca8fa29",
+          "assets/index-Bke7zSeo.css": "275a96cae1a3a4fa515de9d4ee3b8a5a8b16dcf71b8376cf4c493ea47b883cbb",
+          "index.html": "38b2e316928c2bccee15e65462c8547ddcd9ed180b74aee6bea320db3cebfbdc"
+        },
+        "publishedFilesVerifiedAt": "2026-11-03T10:25:04Z",
+        "captureRecordPath": "arcade/capture-evidence/ci-20261103-record.json",
+        "captureRecordSha256": "bfb44da89957f4ffc72722fc672831a7d6313bb04d01ab517ddcfd7cf0dd2994"
+      }
+    }
+  ]
 }
