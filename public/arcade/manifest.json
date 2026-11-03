@@ -4,23 +4,23 @@
   "playUrl": "https://intrepion.github.io/kata-inspired-by-factorio-codex-dot/",
   "screenshots": [
     {
-      "path": "arcade/screenshots/ci-20261103-01.jpg",
-      "sha256": "f8e63c11c8237a483abd3442a8a397d36252c67382158407d5444e556412bf07",
-      "alt": "Brasswake gameplay",
+      "path": "arcade/screenshots/review-20261103-01.jpg",
+      "sha256": "b52b30dd097d908ca312f9d7e96bf2809c5945370b9f8a29fade4ec99f505164",
+      "alt": "Brasswake gameplay after the mechanics update, view 1",
       "provenance": {
         "kind": "ci_gameplay_capture",
-        "sourcePath": "arcade/capture-evidence/ci-20261103-01.png",
-        "sourceSha256": "c30a867e434af929a4e2674e9296e05433df6aad1044540a5c3129dec5ba8333",
-        "captureCommit": "393f16d40b885bb2078bc2e00c6e2003ee256c92",
-        "workflowRunId": "41618864337",
+        "sourcePath": "arcade/capture-evidence/review-20261103-01.png",
+        "sourceSha256": "b79fac93b0ddf5f9b0548743f81c1fd1dfffea15682d20e915fa343887885bab",
+        "captureCommit": "9270fbd14f43e16b65b93377441a5c7e31bf70d2",
+        "workflowRunId": "41675201011",
         "inputHashes": {
-          "assets/index-B_MiVbfW.js": "2bcb2ea67734d2d3a09b05ebadf50ddcf87bea3bc19b4a129507ecf51ca8fa29",
+          "index.html": "6738b15d3077824987bd430b49d94d509a3ce464c56bd8699230202d8b32d529",
           "assets/index-Bke7zSeo.css": "275a96cae1a3a4fa515de9d4ee3b8a5a8b16dcf71b8376cf4c493ea47b883cbb",
-          "index.html": "38b2e316928c2bccee15e65462c8547ddcd9ed180b74aee6bea320db3cebfbdc"
+          "assets/index-CAWaZ38f.js": "b497a7418c8a36c5ae8ce5bf95c584a89582698c0a67e4180a76666c222f6b75"
         },
-        "publishedFilesVerifiedAt": "2026-11-03T10:25:04Z",
-        "captureRecordPath": "arcade/capture-evidence/ci-20261103-record.json",
-        "captureRecordSha256": "bfb44da89957f4ffc72722fc672831a7d6313bb04d01ab517ddcfd7cf0dd2994"
+        "publishedFilesVerifiedAt": "2026-11-03T16:39:43Z",
+        "captureRecordPath": "arcade/capture-evidence/review-20261103-record.json",
+        "captureRecordSha256": "0d0174cd6a13a3bd060b3639e8e766224a43b87bd1ad7d60ced21123af2092fd"
       }
     }
   ]
