@@ -33,7 +33,7 @@ Build, mine, recover and panel transfers require six-tile reach. Buildings are t
 
 ## Production
 
-Start with machines, poles, belts and coal, but no plates or research. Place a drill on blue ore, facing a belt. Belts only pass to belts; an arm between the belt and furnace feeds the furnace. Arms pick up behind and put down ahead. Use inspection controls to insert coal in furnace and generator. Poles link within 6 tiles and cover machines within 4. Each generator supplies 24kW. Follow the in-game field guide.
+Start with machines, poles, belts and coal, but no plates or research. Place a drill on blue ore, facing a belt. Belts pass to belts or diverters; an arm between the belt and furnace feeds the furnace. Arms pick up behind and put down ahead. A diverter is selected by clicking the hotbar. It alternates items between a belt straight ahead and one clockwise to its side, using the open branch if the other is blocked. It is a single-tile approximation of a splitter, without two lanes, filters or priority controls. One is supplied initially and more can be crafted from two plates and one gear. Use inspection controls to insert coal in furnace and generator. Poles link within 6 tiles and cover machines within 4. Each generator supplies 24kW. Follow the in-game field guide.
 
 | Process | Input | Output | Time | Power |
 |---|---|---|---|---|

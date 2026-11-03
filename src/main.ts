@@ -48,10 +48,12 @@ const kinds: Kind[] = [
   "chest",
   "lab",
   "beacon",
+  "diverter",
 ];
 const icons: Record<Kind, string> = {
   drill: "⚒",
   belt: "»",
+  diverter: "⑂",
   arm: "↗",
   furnace: "♨",
   assembler: "⚙",
@@ -99,7 +101,7 @@ function panel() {
   $("toolbar").innerHTML = kinds
     .map(
       (k, i) =>
-        `<button class="tool ${selected === k ? "selected" : ""}" data-kind="${k}"><small>${(i + 1) % 10} · ${w.inventory[k] || 0}</small><b>${icons[k]}</b>${k}</button>`,
+        `<button class="tool ${selected === k ? "selected" : ""}" data-kind="${k}"><small>${i < 10 ? (i + 1) % 10 : "click"} · ${w.inventory[k] || 0}</small><b>${icons[k]}</b>${k}</button>`,
     )
     .join("");
   $("toolbar")
@@ -127,7 +129,7 @@ function panel() {
           .map(([k, n]) => `${k} ${n}`)
           .join(", ") || "empty"
       }<br>Cycle: ${e.progress} · fuel: ${e.fuel} ticks</p>${e.kind === "assembler" ? '<button id="recipe">Recipe: ' + e.recipe + " ↻</button>" : ""}<div class="row"><button id="take">Collect output</button><button id="rotate">Rotate R</button></div>${["ore", "coal", "plate", "gear", "survey"].map((k) => `<div class="row"><span>${k} (${w.inventory[k] || 0})</span><button data-feed="${k}">Insert 5</button></div>`).join("")}`
-    : '<div class="card"><h3>01 / Make a working line</h3><p>Drill on blue ore → belt → arm → furnace.<br>Add coal to the furnace. Power drills and arms using a coal-fed generator and poles.</p><p>Click a structure to open its controls.</p></div>';
+    : '<div class="card"><h3>01 / Make a working line</h3><p>Drill on blue ore → belt → arm → furnace.<br>Add coal to the furnace. Power drills and arms using a coal-fed generator and poles.</p><p>Diverter: click its hotbar tile, then place it. It alternates between the belt ahead and the belt clockwise to its side; a blocked branch uses the other.</p><p>Click a structure to open its controls.</p></div>';
   $("take")?.addEventListener("click", () => {
     if (e) take(w, e);
     panel();
@@ -251,7 +253,7 @@ function draw() {
     ctx.fillStyle = "#14252277";
     ctx.fillRect(-s / 2 + 3, -s / 2 + 5, s, s);
     ctx.fillStyle =
-      e.kind === "belt"
+      e.kind === "belt" || e.kind === "diverter"
         ? "#333c34"
         : e.kind === "furnace"
           ? "#8d6750"
@@ -279,7 +281,7 @@ function draw() {
       ctx.fillRect(-s / 2, -s / 2, 5, 5);
     }
     const item = Object.keys(e.inv).find((k) => e.inv[k] > 0);
-    if (e.kind === "belt" && item) {
+    if ((e.kind === "belt" || e.kind === "diverter") && item) {
       ctx.fillStyle = colors[item] || "#fff";
       ctx.beginPath();
       ctx.arc(

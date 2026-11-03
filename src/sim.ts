@@ -2,6 +2,7 @@ export type Inventory = Record<string, number>;
 export type Kind =
   | "drill"
   | "belt"
+  | "diverter"
   | "arm"
   | "furnace"
   | "assembler"
@@ -49,6 +50,7 @@ export const recipes: Record<
   gear: { input: { plate: 2 }, output: { gear: 1 }, time: 20 },
   survey: { input: { gear: 1, plate: 1 }, output: { survey: 1 }, time: 30 },
   belt: { input: { plate: 1 }, output: { belt: 3 }, time: 0 },
+  diverter: { input: { plate: 2, gear: 1 }, output: { diverter: 1 }, time: 0 },
   arm: { input: { plate: 2, gear: 1 }, output: { arm: 1 }, time: 0 },
   drill: { input: { plate: 5, gear: 2 }, output: { drill: 1 }, time: 0 },
   furnace: { input: { stone: 5 }, output: { furnace: 1 }, time: 0 },
@@ -95,6 +97,7 @@ export function createWorld(): World {
     inventory: {
       drill: 2,
       belt: 24,
+      diverter: 1,
       arm: 10,
       furnace: 2,
       assembler: 2,
@@ -180,7 +183,7 @@ export function craft(w: World, name: string) {
 }
 export function accepts(e: Entity, item: string) {
   if (total(e.inv) >= 40) return false;
-  if (e.kind === "belt") return total(e.inv) < 1;
+  if (e.kind === "belt" || e.kind === "diverter") return total(e.inv) < 1;
   if (e.kind === "chest") return true;
   if (e.kind === "generator") return item === "coal";
   if (e.kind === "furnace") return item === "coal" || item === "ore";
@@ -207,7 +210,9 @@ export function take(w: World, e: Entity) {
   if (!reachable(w, e.x, e.y)) return;
   for (const inv of [
     e.out,
-    ...(e.kind === "chest" || e.kind === "belt" ? [e.inv] : []),
+    ...(e.kind === "chest" || e.kind === "belt" || e.kind === "diverter"
+      ? [e.inv]
+      : []),
   ])
     for (const [k, n] of Object.entries(inv)) {
       add(w.inventory, k, n);
@@ -274,23 +279,35 @@ export function step(w: World) {
   if (w.tick % 5 === 0) {
     const occupied = new Set(
       w.entities
-        .filter((e) => e.kind === "belt" && total(e.inv) > 0)
+        .filter(
+          (e) =>
+            (e.kind === "belt" || e.kind === "diverter") && total(e.inv) > 0,
+        )
         .map((e) => e.id),
     );
     for (const e of w.entities.filter(
-      (e) => e.kind === "belt" && occupied.has(e.id),
+      (e) => (e.kind === "belt" || e.kind === "diverter") && occupied.has(e.id),
     )) {
-      const [dx, dy] = dirs[e.dir],
-        dest = at(w, e.x + dx, e.y + dy);
       const item = Object.keys(e.inv).find((k) => e.inv[k] > 0);
-      if (
-        dest?.kind === "belt" &&
-        !occupied.has(dest.id) &&
-        item &&
-        insert(dest, item)
-      ) {
-        e.inv[item]--;
-        occupied.add(dest.id);
+      // A one-tile diverter branches forward and clockwise. It alternates
+      // successful outputs, using the other if its preferred belt is blocked.
+      const choices =
+        e.kind === "diverter" ? [e.progress % 2, 1 - (e.progress % 2)] : [0];
+      for (const branch of choices) {
+        const [dx, dy] = dirs[(e.dir + branch) % 4];
+        const dest = at(w, e.x + dx, e.y + dy);
+        if (
+          dest &&
+          (dest.kind === "belt" || dest.kind === "diverter") &&
+          !occupied.has(dest.id) &&
+          item &&
+          insert(dest, item)
+        ) {
+          e.inv[item]--;
+          occupied.add(dest.id);
+          if (e.kind === "diverter") e.progress = 1 - branch;
+          break;
+        }
       }
     }
   }
@@ -307,7 +324,9 @@ export function step(w: World) {
         dest = at(w, e.x + dx, e.y + dy);
       if (src && dest) {
         const inv =
-          src.kind === "belt" || src.kind === "chest" ? src.inv : src.out;
+          src.kind === "belt" || src.kind === "diverter" || src.kind === "chest"
+            ? src.inv
+            : src.out;
         const item = Object.keys(inv).find(
           (k) => inv[k] > 0 && accepts(dest, k),
         );
@@ -383,6 +402,7 @@ export function deserialize(raw: string): World {
   const kinds: Kind[] = [
     "drill",
     "belt",
+    "diverter",
     "arm",
     "furnace",
     "assembler",

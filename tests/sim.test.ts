@@ -212,3 +212,62 @@ test("malformed version-one saves are rejected before replacement", () => {
   e.dir = 9;
   assert.throws(() => deserialize(serialize(w)));
 });
+
+test("diverters alternate, reroute around blockage, and conserve items in all orientations", () => {
+  const vectors = [
+    [0, -1],
+    [1, 0],
+    [0, 1],
+    [-1, 0],
+  ];
+  for (let dir = 0; dir < 4; dir++) {
+    let w = createWorld();
+    const d = build(w, "diverter", 10, 10, dir);
+    const [fx, fy] = vectors[dir],
+      [sx, sy] = vectors[(dir + 1) % 4];
+    const front = build(w, "belt", 10 + fx, 10 + fy, dir),
+      side = build(w, "belt", 10 + sx, 10 + sy, dir);
+    assert.ok(insert(d, "ore"));
+    run(w, 5);
+    assert.equal(front.inv.ore, 1);
+    assert.equal(side.inv.ore || 0, 0);
+    front.inv.ore = 0;
+    assert.ok(insert(d, "ore"));
+    run(w, 5);
+    assert.equal(side.inv.ore, 1);
+    // Preferred front is blocked, so the next item goes sideways instead.
+    side.inv.ore = 0;
+    front.inv.ore = 1;
+    assert.ok(insert(d, "ore"));
+    run(w, 5);
+    assert.equal(side.inv.ore, 1);
+    assert.equal(total(d.inv), 0);
+    // Both blocked: the buffered item stays until there is capacity.
+    assert.ok(insert(d, "ore"));
+    run(w, 5);
+    assert.equal(d.inv.ore, 1);
+    w = deserialize(serialize(w));
+    const restored = at(w, 10, 10)!;
+    assert.equal(restored.inv.ore, 1);
+    assert.equal(restored.progress, d.progress);
+    w.player = { x: 10, y: 10 };
+    const before = w.inventory.ore || 0;
+    assert.ok(remove(w, 10, 10));
+    assert.equal(w.inventory.ore, before + 1);
+  }
+});
+
+test("belts feed diverters and powered arms can remove their buffered item", () => {
+  const w = powered();
+  build(w, "pole", 12, 9);
+  const belt = build(w, "belt", 11, 10);
+  const d = build(w, "diverter", 12, 10);
+  build(w, "arm", 13, 10);
+  const box = build(w, "chest", 14, 10);
+  assert.ok(insert(belt, "ore"));
+  run(w, 5);
+  assert.equal(d.inv.ore, 1);
+  run(w, 5);
+  assert.equal(box.inv.ore, 1);
+  assert.equal(total(d.inv), 0);
+});
