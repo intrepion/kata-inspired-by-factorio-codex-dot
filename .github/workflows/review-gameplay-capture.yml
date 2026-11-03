@@ -17,13 +17,13 @@ jobs:
       - run: npm ci
       - run: npm run build -- --base=./
       - run: npm install --no-save --ignore-scripts --package-lock=false playwright@1.63.0
-      - run: npx playwright install --with-deps chromium
+      - run: node node_modules/playwright/cli.js install --with-deps chromium
       - name: Capture genuine gameplay
         env:
           GAME_ID: kata-inspired-by-factorio-codex-dot
           SITE_ROOT: dist
         run: |
-          export SOURCE_COMMIT="$(git rev-parse HEAD^)"
+          export SOURCE_COMMIT="393f16d40b885bb2078bc2e00c6e2003ee256c92"
           python3 -m http.server 4320 --bind 127.0.0.1 --directory "$SITE_ROOT" > /tmp/capture-server.log 2>&1 &
           server_pid=$!
           trap 'kill "$server_pid"' EXIT
